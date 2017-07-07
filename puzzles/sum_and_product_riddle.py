@@ -2,28 +2,25 @@
 # -*- coding: utf-8 -*-
 
 """
-Δύο φοιτητές μαθηματικών, ο Άρης και ο Γιώργος, ενδιαφέρονται για την ίδια
-συμφοιτήτριά τους τη Μαρία. Αυτή τους είπε πως θα τα φτιάξει με αυτόν που θα
-αποδειχτεί πιο έξυπνος από τους δύο. Έβαλε στο μυαλό της δύο ακέραιους αριθμούς
-από το 3 έως το 100 και ψιθύρισε στον Άρη το άθροισμά τους και στον Γιώργο το
-γινόμενό τους. Τους εξήγησε τους κανόνες και τους είπε πως όποιος από τους δύο
-καταφέρει να βρει τους δύο αριθμούς θα κερδίσει την καρδιά της. Τότε οι δύο
-φοιτητές έκαναν μεταξύ τους τον παρακάτω διάλογο:
+X and Y are two different whole numbers in the range [3, 100].
+S and P are two mathematicians.
+S knows the sum X + Y, while P knows the product X * Y.
+The following conversation occurs:
+Both S and P know all the information in this paragraph.
 
-Άρης: Ξέρω πως δεν μπορείς να βρεις τους αριθμούς. Δυστυχώς ούτε κι εγώ μπορώ.
-Γιώργος: Τώρα με αυτό που είπες τους βρήκα!
-Άρης: Τώρα τους βρήκα κι εγώ!
+S: I know you cannot find the numbers. Unfortunately, I cannot either.
+P: Now I know X and Y!
+S: Now I also know X and Y!
 
-Στο τέλος έμειναν κι οι δύο μπουκάλες γιατί ήρθαν ισοπαλία, αλλά τουλάχιστον
-πήραν την ικανοποίηση πως έλυσαν το γρίφο της Μαρίας. Ποιοι ήταν οι δύο αριθμοί;
+What are X and Y?
 
-Σαν βοήθεια δίνεται η Εικασία του Goldbach, που λέει πως κάθε ζυγός αριθμός
-μπορεί να γραφτεί σαν άθροισμα δύο πρώτων. Παρόλο που δεν έχει αποδειχτεί για
-κάθε αριθμό, ισχύει στα σίγουρα μέσα στα όρια που θέτει το πρόβλημα.
+Hint: You may find Goldbach's Conjecture useful.
 """
 
 from __future__ import print_function
 from __future__ import division
+
+from builtins import range
 
 import operator
 
@@ -33,20 +30,24 @@ from collections import Counter
 import numpy as np
 
 def main():
-    N = 100
-    sum_nums = np.fromfunction(lambda i, j: i + j, (N+1, N+1), dtype=np.int32)
-    prod_nums = np.fromfunction(lambda i, j: i * j, (N+1, N+1), dtype=np.int32)
+    low_limit = 3
+    high_limit = 100
+    sum_limit = 200
+    array_shape = (high_limit+1, high_limit+1)
+    sum_nums = np.fromfunction(lambda i, j: i + j, array_shape, dtype=np.int32)
+    # prod_nums = np.fromfunction(lambda i, j: i * j, array_shape, dtype=np.int32)
 
     adders = defaultdict(list)
-    divisors = defaultdict(list)
-    for i in xrange(3, N+1):
-        for j in xrange(3, i+1):
-            adders[sum_nums[i, j]] += [(i, j)]
-            divisors[prod_nums[i, j]] += [(i, j)]
+    # divisors = defaultdict(list)
+    for i in range(low_limit, high_limit+1):
+        for j in range(low_limit, i+1):
+            if sum_limit and i + j <= sum_limit:
+                adders[sum_nums[i, j]] += [(i, j)]
+                # divisors[prod_nums[i, j]] += [(i, j)]
 
     # Exclude single combinations from components
     adders = {k: v for k, v in adders.iteritems() if len(v) > 1}
-    divisors = {k: v for k, v in divisors.iteritems() if len(v) > 1}
+    # divisors = {k: v for k, v in divisors.iteritems() if len(v) > 1}
 
     # Exclude even sums and odd products (Goldbach's Conjecture) Since A knows
     # that P cannot conclude to a single pair, the sum should not be even, as
