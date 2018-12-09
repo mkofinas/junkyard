@@ -1,2 +1,2 @@
-# my-randomness
-Various personal scripts and mini-projects
+# Junkyard
+Various personal automation scripts and mini-projects
